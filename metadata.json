@@ -1,0 +1,6 @@
+{
+  "name": "Velas Comestibles Gourmet",
+  "description": "Landing page oficial para el curso de creación de velas comestibles gourmet dulces y saladas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

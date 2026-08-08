@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --color-amber-300: #fae7a5;
+  --color-amber-400: #f2d26f;
+  --color-amber-500: #e5c567;
+  --color-amber-600: #c9a73e;
+  --color-amber-700: #a38227;
+  --color-amber-900: #574412;
+  --color-amber-950: #2e2208;
+  --color-cream-100: #faf7f0;
+  --color-cream-200: #f2ece1;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: #000000;
+    color: #f2ece1;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+
