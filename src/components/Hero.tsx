@@ -15,10 +15,20 @@ export default function Hero({ onScrollToPricing, onScrollToRecipes }: HeroProps
       <div className="max-w-4xl mx-auto text-center relative z-10">
         
         {/* Top Decorative Banner Card matching the exact image reference */}
-        <div className="w-full bg-[#c59b27] h-12 sm:h-16 rounded-xl mb-12 shadow-lg shadow-amber-900/20 flex items-center justify-center px-6">
+        <div className="w-full bg-[#c59b27] h-12 sm:h-16 rounded-xl mb-8 shadow-lg shadow-amber-900/20 flex items-center justify-center px-6">
           <span className="text-black font-serif font-bold text-sm sm:text-base tracking-widest uppercase">
             ARTE CULINARIO & INNOVACIÓN EN LA MESA
           </span>
+        </div>
+
+        {/* High-Impact Moment with Friends at Table Photo */}
+        <div className="relative rounded-2xl overflow-hidden border-2 border-amber-500/50 shadow-2xl mb-8 group">
+          <img 
+            src="https://i.imgur.com/vlnQa06.png" 
+            alt="Momento con amigos sorprendidos en la mesa con velas comestibles" 
+            className="w-full h-[320px] sm:h-[500px] object-cover group-hover:scale-105 transition-transform duration-700"
+            referrerPolicy="no-referrer"
+          />
         </div>
 
         {/* Social Proof & Avatars */}
