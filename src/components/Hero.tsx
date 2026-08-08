@@ -1,12 +1,39 @@
-import React from 'react';
-import { Star, ArrowRight, Sparkles, Flame, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Star, ArrowRight, Sparkles, Flame, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface HeroProps {
   onScrollToPricing: () => void;
   onScrollToRecipes: () => void;
 }
 
+const carouselImages = [
+  { url: 'https://i.imgur.com/FFgMOc0.png', title: 'Velas Gourmet Artesanales' },
+  { url: 'https://i.imgur.com/1KUAoy1.png', title: 'Creaciones Exclusivas' },
+  { url: 'https://i.imgur.com/g26mdyC.png', title: 'Experiencia Culinaria Única' },
+  { url: 'https://i.imgur.com/gCRpHB2.png', title: 'Presentación Profesional' },
+  { url: 'https://i.imgur.com/8zQSizA.png', title: 'Sabores Dulces y Salados' },
+  { url: 'https://i.imgur.com/sjwT7Y7.png', title: 'Detalles que Sorprenden' },
+  { url: 'https://i.imgur.com/vl3Mkcq.png', title: 'El Arte de las Velas Comestibles' },
+];
+
 export default function Hero({ onScrollToPricing, onScrollToRecipes }: HeroProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % carouselImages.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % carouselImages.length);
+  };
+
   return (
     <section className="relative pt-12 pb-20 px-4 sm:px-6 lg:px-8 bg-black text-white overflow-hidden border-b border-amber-900/30">
       {/* Background glow effects */}
@@ -14,46 +41,63 @@ export default function Hero({ onScrollToPricing, onScrollToRecipes }: HeroProps
       
       <div className="max-w-4xl mx-auto text-center relative z-10">
         
-        {/* Top Decorative Banner Card matching the exact image reference */}
-        <div className="w-full bg-[#c59b27] h-12 sm:h-16 rounded-xl mb-8 shadow-lg shadow-amber-900/20 flex items-center justify-center px-6">
-          <span className="text-black font-serif font-bold text-sm sm:text-base tracking-widest uppercase">
-            ARTE CULINARIO & INNOVACIÓN EN LA MESA
+        {/* Auto-playing Carousel */}
+        <div className="relative max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl mb-3 group bg-neutral-900 aspect-[16/9] max-h-[340px]">
+          {carouselImages.map((img, idx) => (
+            <div
+              key={idx}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                idx === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+              }`}
+            >
+              <img
+                src={img.url}
+                alt={img.title}
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+          ))}
+
+          {/* Navigation Arrows */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/60 hover:bg-amber-600 text-white hover:text-black p-2.5 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-lg"
+            aria-label="Anterior"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/60 hover:bg-amber-600 text-white hover:text-black p-2.5 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-lg"
+            aria-label="Siguiente"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+
+          {/* Dots Indicator */}
+          <div className="absolute bottom-3 right-4 z-20 flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full">
+            {carouselImages.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentIndex(idx)}
+                className={`h-2 rounded-full transition-all cursor-pointer ${
+                  idx === currentIndex ? 'w-6 bg-amber-400' : 'w-2 bg-white/50 hover:bg-white'
+                }`}
+                aria-label={`Ir a diapositiva ${idx + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Small caption below carousel */}
+        <div className="mb-8">
+          <span className="inline-block bg-neutral-900 text-amber-300 font-serif text-xs sm:text-sm px-4 py-1.5 rounded-full border border-amber-500/30 shadow-md">
+            ✨ {carouselImages[currentIndex].title}
           </span>
         </div>
 
-        {/* High-Impact Moment with Friends at Table Photo */}
-        <div className="relative rounded-2xl overflow-hidden border-2 border-amber-500/50 shadow-2xl mb-8 group">
-          <img 
-            src="https://i.imgur.com/vlnQa06.png" 
-            alt="Momento con amigos sorprendidos en la mesa con velas comestibles" 
-            className="w-full h-[320px] sm:h-[500px] object-cover group-hover:scale-105 transition-transform duration-700"
-            referrerPolicy="no-referrer"
-          />
-        </div>
-
-        {/* Social Proof & Avatars */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
-          <div className="flex -space-x-3 overflow-hidden">
-            <img className="inline-block h-10 w-10 rounded-full ring-2 ring-amber-500 object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Estudiante" />
-            <img className="inline-block h-10 w-10 rounded-full ring-2 ring-amber-500 object-cover" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80" alt="Estudiante" />
-            <img className="inline-block h-10 w-10 rounded-full ring-2 ring-amber-500 object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Estudiante" />
-            <img className="inline-block h-10 w-10 rounded-full ring-2 ring-amber-500 object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Estudiante" />
-            <img className="inline-block h-10 w-10 rounded-full ring-2 ring-amber-500 object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80" alt="Estudiante" />
-          </div>
-          
-          <div className="flex flex-col sm:flex-row items-center gap-2">
-            <div className="flex text-amber-400">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-amber-400" />
-              ))}
-            </div>
-            <span className="text-neutral-300 text-sm sm:text-base font-medium tracking-wide">
-              más de <strong className="text-amber-400">1,540 personas</strong> ya aprendieron cómo hacerlas
-            </span>
-          </div>
-        </div>
-
-        {/* Main Headline matching the exact prompt */}
+        {/* Main Headline right below first photo/carousel */}
         <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal leading-[1.2] mb-6 tracking-tight">
           Crea Velas Comestibles Gourmet <br className="hidden sm:inline" />
           y sorprende a tus invitados{' '}
@@ -66,6 +110,18 @@ export default function Hero({ onScrollToPricing, onScrollToRecipes }: HeroProps
         <p className="text-neutral-300 text-lg sm:text-xl font-light max-w-2xl mx-auto mb-10 leading-relaxed">
           Aprende a hacer Velas Comestibles Gourmet dulces y saladas con ingredientes sencillos y un método paso a paso muy fácil.
         </p>
+
+
+
+        {/* Full width image FoyEusV */}
+        <div className="w-full mb-12 rounded-2xl overflow-hidden shadow-2xl">
+          <img 
+            src="https://i.imgur.com/FoyEusV.png" 
+            alt="Vela comestible gourmet destacada" 
+            className="w-full h-[320px] sm:h-[520px] object-cover hover:scale-105 transition-transform duration-700"
+            referrerPolicy="no-referrer"
+          />
+        </div>
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -101,7 +157,7 @@ export default function Hero({ onScrollToPricing, onScrollToRecipes }: HeroProps
 
         {/* Immediate High-Impact Photo Showcase to Grab Attention */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-amber-900/40">
-          <div className="relative group overflow-hidden rounded-2xl aspect-square border border-amber-500/30 shadow-xl">
+          <div className="relative group overflow-hidden rounded-2xl aspect-square shadow-xl">
             <img 
               src="https://images.unsplash.com/photo-1541544741938-0af808871cc0?w=500&auto=format&fit=crop&q=80" 
               alt="Vela Tomate y Albahaca" 
@@ -111,7 +167,7 @@ export default function Hero({ onScrollToPricing, onScrollToRecipes }: HeroProps
               <span className="text-xs font-serif text-amber-200 font-medium">Tomate Seco y Albahaca</span>
             </div>
           </div>
-          <div className="relative group overflow-hidden rounded-2xl aspect-square border border-amber-500/30 shadow-xl">
+          <div className="relative group overflow-hidden rounded-2xl aspect-square shadow-xl">
             <img 
               src="https://images.unsplash.com/photo-1587314168485-3236d6710814?w=500&auto=format&fit=crop&q=80" 
               alt="Vela Manteca Avellanada" 
@@ -121,7 +177,7 @@ export default function Hero({ onScrollToPricing, onScrollToRecipes }: HeroProps
               <span className="text-xs font-serif text-amber-200 font-medium">Manteca Avellanada y Miel</span>
             </div>
           </div>
-          <div className="relative group overflow-hidden rounded-2xl aspect-square border border-amber-500/30 shadow-xl">
+          <div className="relative group overflow-hidden rounded-2xl aspect-square shadow-xl">
             <img 
               src="https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=500&auto=format&fit=crop&q=80" 
               alt="Vela Chocolate Cremoso" 
@@ -131,7 +187,7 @@ export default function Hero({ onScrollToPricing, onScrollToRecipes }: HeroProps
               <span className="text-xs font-serif text-amber-200 font-medium">Chocolate con Sal Marina</span>
             </div>
           </div>
-          <div className="relative group overflow-hidden rounded-2xl aspect-square border border-amber-500/30 shadow-xl">
+          <div className="relative group overflow-hidden rounded-2xl aspect-square shadow-xl">
             <img 
               src="https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=500&auto=format&fit=crop&q=80" 
               alt="Vela Hierbas Aromáticas" 
